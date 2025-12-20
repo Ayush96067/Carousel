@@ -2,10 +2,28 @@
 // import { Crousel } from "./components/Crousel";
 // import { Card } from "./components/Card";
 import { HeroImage } from "./components/HeroImage";
-import { HeroBanner, products } from "./../../../crousel/src/lib/data";
+import { HeroBanner, image_track, products } from "./lib/data";
 import { BrowserRouter } from "react-router-dom";
 import { Card2 } from "./components/Card2";
-import { Crousel } from "../../../crousel/src/components/Crousel";
+import { Crousel } from "./components/Crousel";
+import ImageTracking from "./components/ImageTracking";
+
+function ImageTrackingPager({ scroll_To, index, currentSlide, item }) {
+  return (
+    <div className={"image_tracker_container"}>
+      <img
+        src={`${item}`}
+        alt="Product image"
+        key={index}
+        onClick={(e) => scroll_To(index, e)}
+        className={`${"image_tracker"} ${
+          currentSlide === index ? "active_tracker" : ""
+        }`}
+        aria-label={`Go to slide ${index + 1}`}
+      />
+    </div>
+  );
+}
 
 function App() {
   const isMobile = window.innerWidth <= 768;
@@ -16,16 +34,16 @@ function App() {
 
   return (
     <div className="container">
-      <Crousel
-        items={HeroBanner}
-        itemsCount={1}
-        slideMove={1}
-        maxWidth={"100vw"}
-        scrollButtonRequired={false}
-      >
-        <HeroImage />
-      </Crousel>
       <BrowserRouter>
+        <Crousel
+          items={HeroBanner}
+          itemsCount={1}
+          slideMove={1}
+          maxWidth={"100vw"}
+          scrollButtonRequired={false}
+        >
+          <HeroImage />
+        </Crousel>
         <Crousel
           items={products}
           productCard={true}
@@ -35,6 +53,15 @@ function App() {
           scrollButtonRequired={true}
         >
           <Card2 />
+        </Crousel>
+        <Crousel
+          items={image_track}
+          itemsCount={itemsCount}
+          maxWidth={"90vw"}
+          scrollButtonRequired={true}
+          PagerComponent={ImageTrackingPager}
+        >
+          <ImageTracking />
         </Crousel>
       </BrowserRouter>
     </div>
