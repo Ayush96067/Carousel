@@ -10,3 +10,24 @@ body {
   justify-content: center;
   min-height: 100vh;
 }
+
+
+
+
+/* image tracker */
+
+.image_tracker_container{
+  width: 40px;
+  position: relative;
+  top:30px;
+}
+
+.image_tracker{
+  width: 100%;
+  cursor: pointer;
+  border: 1px solid black;
+}
+
+.image_tracker:hover , .image_tracker.active_tracker{
+  scale: 1.1;
+}
