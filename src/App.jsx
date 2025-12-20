@@ -32,6 +32,22 @@ function App() {
 
   const itemsCount = isDesktop ? 5 : isTablet ? 2 : 1;
 
+  /*
+  <Crousel
+    items={itemsObject = []}
+    itemsCount={no. of items to show on screen = 1}
+    slideMove={no. of items to slide on screen = 1}
+    maxWidth={max width hold by the crousel = 1200px}
+    scrollButtonRequired={show scroll button or not = false}
+    gapBetweenItems={gap between crousel items = 16px}
+    PagerComponent={Pager component = <DefaultPagerComponent />(defined in Crousel.jsx file)}
+    *setActiveSlide={}
+    *afterSlideCallback={}
+    *beforeSlideCallback={}
+    *activeSlide={}
+  >
+  </Crousel>
+*/
   return (
     <div className="container">
       <BrowserRouter>
@@ -49,6 +65,7 @@ function App() {
           productCard={true}
           itemsCount={itemsCount}
           slideMove={itemsCount}
+          gapBetweenItems={"1rem"}
           maxWidth={"85vw"}
           scrollButtonRequired={true}
         >
@@ -56,8 +73,10 @@ function App() {
         </Crousel>
         <Crousel
           items={image_track}
-          itemsCount={itemsCount}
+          itemsCount={2}
+          slideMove={1}
           maxWidth={"90vw"}
+          gapBetweenItems={"0rem"}
           scrollButtonRequired={true}
           PagerComponent={ImageTrackingPager}
         >
@@ -69,42 +88,3 @@ function App() {
 }
 
 export default App;
-
-// Rest code
-
-// <div style={{ padding: "50px" }}>
-//   <Crousel
-//     items={products}
-//     productCard={true}
-//     itemsCount={itemsCount}
-//     slideMove={itemsCount}
-//   >
-//     <Card />
-//   </Crousel>
-//   {/* <Crousel items={news} productCard={false} itemsCount={4} slideMove={1}>
-//     <Card />
-//   </Crousel> */}
-// </div>
-
-{
-  /* <div>
-  <Crousel
-    items={HeroBanner}
-    itemsCount={1}
-    slideMove={1}
-    maxWidth={"100vw"}
-    scrollButtonRequired={false}
-  >
-    <HeroImage />
-  </Crousel>
-  <Crousel
-    items={products}
-    productCard={true}
-    itemsCount={4}
-    slideMove={4}
-    maxWidth={"90vw"}
-  >
-    <Card />
-  </Crousel>
-</div> */
-}

@@ -1,16 +1,16 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import styles from "../Styles/carousel.module.css";
-import { products } from "./../lib/data";
 
 export function Crousel({
   children,
   items = [],
   itemsCount = 1,
   slideMove = 2,
-  maxWidth = 1200,
+  maxWidth = "100vw",
   scrollButtonRequired = false,
+  gapBetweenItems = "16px",
   PagerComponent = DefaultPagerComponent,
-  // activeSlide = 1,
+  activeSlide = 5,
   // setActiveSlide:
   // afterSlideCb:
   // beforeSlideCb:
@@ -50,6 +50,7 @@ export function Crousel({
 
   const scroll_To = (indexOrDirection, e) => {
     e.preventDefault();
+
     const track = trackRef.current;
     if (!track) return;
 
@@ -77,7 +78,11 @@ export function Crousel({
           <ul
             className={styles.carousel_track}
             ref={trackRef}
-            style={{ "--item-count": itemsCount, listStyle: "none" }}
+            style={{
+              "--item-count": itemsCount,
+              "--gap-between-elements": gapBetweenItems,
+              listStyle: "none",
+            }}
           >
             {items?.map((item) => (
               <li
@@ -92,7 +97,7 @@ export function Crousel({
           {scrollButtonRequired && canScrollRight && (
             <ScrollButton scroll={scroll_To} direction={"right"} />
           )}
-          <div className={styles.crousel_pager}>
+          <div id="pager_id" className={styles.crousel_pager}>
             {items.map((item, index) => (
               <PagerComponent
                 scroll_To={scroll_To}

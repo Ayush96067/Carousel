@@ -1,6 +1,9 @@
 .imageContainer{
-    width: 20rem;
+    width: 40rem;
     padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .imageContainer img{

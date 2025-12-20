@@ -13,7 +13,7 @@
 /* The Scrollable Track */
 .carousel_track {
   display: flex;
-  gap: 16px;
+  gap: var(--gap-between-elements);
   overflow-x: auto;
   padding: 0px;
   scroll-behavior: smooth;
@@ -29,7 +29,7 @@
 .carousel_item {
   flex-shrink: 0;
   width: calc(
-    (100% - (var(--item-count, 1) - 1) * 16px) / (var(--item-count, 1))
+    (100% - (var(--item-count, 1) - 1) * var(--gap-between-elements)) / (var(--item-count, 1))
   );
   scroll-snap-align: center;
   display: flex;
