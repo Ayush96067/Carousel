@@ -43,7 +43,7 @@
   cursor: pointer;
   box-shadow: var(--shadow-hover);
   color: var(--color-text-black);
-  transition: opacity 0.3s;
+  transition: scale 0.3s;
 }
 
 .card_link_wrapper {
@@ -164,7 +164,7 @@
   /* Hover Effects for Desktop */
   .product_card:hover {
     box-shadow: var(--shadow-hover);
-    transform: translateY(-2px);
+    transform: translateY(-1px);
   }
 
   .product_card:hover .product_image {
@@ -181,15 +181,17 @@
     margin: 0.75rem auto;
     opacity: 0;
     transition: opacity 0.3s ease;
-    background-color: var(--color-white);
   }
 
   .action_btn span {
-    border: none;
+    /* border: none; */
+    border:1px solid #92929244;
+    /* 929292a1 */
+
   }
 
   .action_btn span:hover {
-    background-color: #d8d8d869;
+    background-color: #d8d8d848;
     border: none;
   }
 

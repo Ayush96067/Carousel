@@ -83,21 +83,21 @@
 }
 
 .pager_dot {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   background-color: transparent;
   border: 1px solid rgba(0, 0, 0, 0.541);
   border-radius: 50%;
   cursor: pointer;
   padding: 0;
-  transition: all 0.3s ease;
+  transition: all 0.5s ease;
 }
 
 .pager_dot:hover,
 .pager_dot.active {
   background-color: #313131;
   border: none;
-  scale: 1.2;
+  scale: 1.1;
 }
 
 @media (max-width: 1280px) {
@@ -108,3 +108,7 @@
     scroll-snap-align: center;
   }
 }
+
+
+
+

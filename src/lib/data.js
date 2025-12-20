@@ -2,6 +2,8 @@ export const products = [
   {
     id: 1,
     title: "Lab grown diamond yellow gold bracelet",
+    delivery: "12/25",
+
     imagePath: [
       "./images/6x4mm-fgvs-lab-grown-diamond-yellow-gold-ring.webp",
       "./images/1.5mm-fgvs-lab-grown-diamond-yellow-gold-bracelet (1).webp",
@@ -15,6 +17,7 @@ export const products = [
   {
     id: 2,
     title: "Lab grown diamond yellow gold bracelet",
+    delivery: "12/25",
     imagePath: ["./images/2.5mm-iji1i2-diamond-yellow-gold-ring.webp"],
     price: "1123",
     orgPrice: "1334",
@@ -22,6 +25,7 @@ export const products = [
   {
     id: 3,
     title: "Lab grown diamond yellow gold bracelet",
+    delivery: "12/25",
     imagePath: [
       "./images/6.4mm-fgvs-lab-grown-diamond-18k-yellow-gold-earrings.webp",
       "./images/1.5mm-fgvs-lab-grown-diamond-yellow-gold-bracelet (1).webp",
@@ -34,6 +38,8 @@ export const products = [
   {
     id: 4,
     title: "Lab grown diamond yellow gold bracelet",
+    delivery: "12/25",
+
     imagePath: ["./images/6x4mm-fgvs-lab-grown-diamond-yellow-gold-ring.webp"],
     price: "869",
     orgPrice: "1334",
@@ -41,6 +47,8 @@ export const products = [
   {
     id: 5,
     title: "Lab grown diamond yellow gold bracelet",
+    delivery: "12/25",
+
     imagePath: [
       "./images/7x5mm-fgvs-lab-grown-diamond-yellow-gold-pendant.webp",
     ],
@@ -50,6 +58,8 @@ export const products = [
   {
     id: 6,
     title: "Lab grown diamond yellow gold bracelet",
+    delivery: "12/25",
+
     imagePath: ["./images/8x5mm-aaaa-pink-sapphire-yellow-gold-earrings.webp"],
     price: "1245",
     orgPrice: "1334",
@@ -57,6 +67,8 @@ export const products = [
   {
     id: 7,
     title: "Lab grown diamond yellow gold bracelet",
+    delivery: "12/25",
+
     imagePath: [
       "./images/9x4.5mm-fgvs-lab-grown-diamond-yellow-gold-ring.webp",
     ],
@@ -66,6 +78,8 @@ export const products = [
   {
     id: 8,
     title: "Lab grown diamond yellow gold bracelet",
+    delivery: "12/25",
+
     imagePath: ["./images/SP2563SAQD-WG-AAA-10x8_1.webp"],
     price: "1325",
     orgPrice: "1334",
@@ -73,6 +87,8 @@ export const products = [
   {
     id: 9,
     title: "Lab grown diamond yellow gold bracelet",
+    delivery: "12/25",
+
     imagePath: [
       "./images/7x5mm-fgvs-lab-grown-diamond-yellow-gold-pendant.webp",
     ],
@@ -82,6 +98,8 @@ export const products = [
   {
     id: 10,
     title: "Lab grown diamond yellow gold bracelet",
+    delivery: "12/25",
+
     imagePath: ["./images/8x5mm-aaaa-pink-sapphire-yellow-gold-earrings.webp"],
     price: "873",
     orgPrice: "1334",
@@ -89,6 +107,8 @@ export const products = [
   {
     id: 11,
     title: "Lab grown diamond yellow gold bracelet",
+    delivery: "12/25",
+
     imagePath: [
       "./images/9x4.5mm-fgvs-lab-grown-diamond-yellow-gold-ring.webp",
     ],
@@ -97,6 +117,8 @@ export const products = [
   {
     id: 12,
     title: "Lab grown diamond yellow gold bracelet",
+    delivery: "12/25",
+
     imagePath: ["./images/SP2563SAQD-WG-AAA-10x8_1.webp"],
     price: "1000",
     orgPrice: "1334",
@@ -200,4 +222,19 @@ export const HeroBanner = [
   "./HeroBanner/Hero-Banner-1.webp",
   "./HeroBanner/Hero-Banner-1.webp",
   "./HeroBanner/Hero-Banner-1.webp",
+];
+
+export const image_track = [
+  "./image_tracking/img1.webp",
+  "./image_tracking/img2.webp",
+  "./image_tracking/img4.webp",
+  "./image_tracking/img5.webp",
+  "./image_tracking/img6.webp",
+  "./image_tracking/img7.webp",
+  "./image_tracking/img1.webp",
+  "./image_tracking/img2.webp",
+  "./image_tracking/img4.webp",
+  "./image_tracking/img5.webp",
+  "./image_tracking/img6.webp",
+  "./image_tracking/img7.webp",
 ];

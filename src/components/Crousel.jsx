@@ -1,18 +1,26 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import styles from "../Styles/carousel.module.css";
+import { products } from "./../lib/data";
 
 export function Crousel({
   children,
-  items,
+  items = [],
   itemsCount = 1,
   slideMove = 2,
   maxWidth = 1200,
-  scrollButtonRequired = true,
+  scrollButtonRequired = false,
+  PagerComponent = DefaultPagerComponent,
+  // activeSlide = 1,
+  // setActiveSlide:
+  // afterSlideCb:
+  // beforeSlideCb:
 }) {
   const trackRef = useRef(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(1);
+
+  if (items.length === 0) return <p>No products</p>;
 
   const checkScrollability = useCallback(() => {
     if (!trackRef.current) return;
@@ -40,7 +48,8 @@ export function Crousel({
     };
   }, [checkScrollability]);
 
-  const scroll_To = (indexOrDirection) => {
+  const scroll_To = (indexOrDirection, e) => {
+    e.preventDefault();
     const track = trackRef.current;
     if (!track) return;
 
@@ -55,7 +64,11 @@ export function Crousel({
   };
 
   return (
-    <div className={styles.carousel_container} style={{ maxWidth: maxWidth }}>
+    <div
+      id={"carousel"}
+      className={styles.carousel_container}
+      style={{ maxWidth: maxWidth }}
+    >
       {items.length > 1 ? (
         <>
           {scrollButtonRequired && canScrollLeft && (
@@ -80,14 +93,12 @@ export function Crousel({
             <ScrollButton scroll={scroll_To} direction={"right"} />
           )}
           <div className={styles.crousel_pager}>
-            {items.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => scroll_To(index)}
-                className={`${styles.pager_dot} ${
-                  currentSlide === index ? styles.active : ""
-                }`}
-                aria-label={`Go to slide ${index + 1}`}
+            {items.map((item, index) => (
+              <PagerComponent
+                scroll_To={scroll_To}
+                index={index}
+                currentSlide={currentSlide}
+                item={item}
               />
             ))}
           </div>
@@ -107,18 +118,32 @@ export function Crousel({
   );
 }
 
-function ScrollButton({ scroll, direction }) {
+function ScrollButton({ scroll, index, direction }) {
   return (
     <button
+      key={index}
       className={`${styles.carousel_btn} ${
         direction === "right"
           ? styles.carousel_btn_right
           : styles.carousel_btn_left
       }`}
-      onClick={() => scroll(direction)}
+      onClick={(e) => scroll(direction, e)}
       aria-label="Scroll Right"
     >
       {direction === "right" ? <>&#8250;</> : <>&#8249;</>}
     </button>
   );
 }
+
+const DefaultPagerComponent = ({ scroll_To, index, currentSlide }) => {
+  return (
+    <button
+      key={index}
+      onClick={(e) => scroll_To(index, e)}
+      className={`${styles.pager_dot} ${
+        currentSlide === index ? styles.active : ""
+      }`}
+      aria-label={`Go to slide ${index + 1}`}
+    />
+  );
+};
