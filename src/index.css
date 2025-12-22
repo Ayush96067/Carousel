@@ -19,7 +19,8 @@ body {
 .image_tracker_container{
   width: 40px;
   position: relative;
-  top:30px;
+  /* top:30px; */
+  /* background-color: black; */
 }
 
 .image_tracker{

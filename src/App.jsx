@@ -48,6 +48,29 @@ function App() {
   >
   </Crousel>
 */
+
+  const beforeSlideTask = (message) => {
+    return new Promise((res) => {
+      setTimeout(() => {
+        console.log(message);
+        res();
+      }, 3000);
+    });
+  };
+
+  const getCurrentItem = (currSlide, currItem) => {
+    console.log(
+      `=====> Called before sliding => Current item has index ${currSlide} and current Item is : `,
+      currItem
+    );
+  };
+
+  const afterSlideCB = (currSlide) => {
+    console.log(
+      `<===== Called after sliding  => Current item has index ${currSlide} and current Item is : `
+    );
+  };
+
   return (
     <div className="container">
       <BrowserRouter>
@@ -68,12 +91,18 @@ function App() {
           gapBetweenItems={"1rem"}
           maxWidth={"85vw"}
           scrollButtonRequired={true}
+          // beforeSlideCb={async (i) => {
+          //   await beforeSlideTask(`Checking database for slide ${i}`);
+          // }}
+
+          beforeSlideCb={getCurrentItem}
+          // afterSlideCb={afterSlideCB}
         >
           <Card2 />
         </Crousel>
         <Crousel
           items={image_track}
-          itemsCount={2}
+          itemsCount={1}
           slideMove={1}
           maxWidth={"90vw"}
           gapBetweenItems={"0rem"}

@@ -123,6 +123,83 @@ export const products = [
     price: "1000",
     orgPrice: "1334",
   },
+  {
+    id: 13,
+    title: "Lab grown diamond yellow gold bracelet",
+    delivery: "12/25",
+
+    imagePath: ["./images/SP2563SAQD-WG-AAA-10x8_1.webp"],
+    price: "1000",
+    orgPrice: "1334",
+  },
+  {
+    id: 14,
+    title: "Lab grown diamond yellow gold bracelet",
+    delivery: "12/25",
+
+    imagePath: [
+      "./images/9x4.5mm-fgvs-lab-grown-diamond-yellow-gold-ring.webp",
+    ],
+    price: "5864",
+    orgPrice: "1334",
+  },
+  {
+    id: 15,
+    title: "Lab grown diamond yellow gold bracelet",
+    delivery: "12/25",
+
+    imagePath: ["./images/SP2563SAQD-WG-AAA-10x8_1.webp"],
+    price: "1325",
+    orgPrice: "1334",
+  },
+  {
+    id: 16,
+    title: "Lab grown diamond yellow gold bracelet",
+    delivery: "12/25",
+
+    imagePath: [
+      "./images/7x5mm-fgvs-lab-grown-diamond-yellow-gold-pendant.webp",
+    ],
+    price: "786",
+    orgPrice: "1334",
+  },
+  {
+    id: 17,
+    title: "Lab grown diamond yellow gold bracelet",
+    delivery: "12/25",
+
+    imagePath: ["./images/8x5mm-aaaa-pink-sapphire-yellow-gold-earrings.webp"],
+    price: "873",
+    orgPrice: "1334",
+  },
+  {
+    id: 18,
+    title: "Lab grown diamond yellow gold bracelet",
+    delivery: "12/25",
+
+    imagePath: [
+      "./images/9x4.5mm-fgvs-lab-grown-diamond-yellow-gold-ring.webp",
+    ],
+    price: "2700",
+  },
+  {
+    id: 19,
+    title: "Lab grown diamond yellow gold bracelet",
+    delivery: "12/25",
+
+    imagePath: ["./images/SP2563SAQD-WG-AAA-10x8_1.webp"],
+    price: "1000",
+    orgPrice: "1334",
+  },
+  {
+    id: 20,
+    title: "Lab grown diamond yellow gold bracelet",
+    delivery: "12/25",
+
+    imagePath: ["./images/SP2563SAQD-WG-AAA-10x8_1.webp"],
+    price: "1000",
+    orgPrice: "1334",
+  },
 ];
 
 export const news = [
