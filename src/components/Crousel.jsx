@@ -7,21 +7,24 @@ export function Carousel({
   itemsCount = 1,
   slideMove = 1,
   maxWidth = "100vw",
-  scrollButtonRequired = false,
+  scrollButtonRequired = true,
   gapBetweenItems = "16px",
   afterSlideCb,
   beforeSlideCb,
   isPagerRequired = true,
+  activeSlide = null,
+  setActiveSlide,
 }) {
   const trackRef = useRef(null);
   const isFirstRender = useRef(true);
   const targetSlideRef = useRef(null);
+  const isFirst = useRef(true);
 
   // Grouped state for cleaner updates
   const [scrollState, setScrollState] = useState({
     left: false,
     right: false,
-    index: 0,
+    index: activeSlide ?? 0,
   });
 
   const [isProcessing, setIsProcessing] = useState(false);
@@ -33,13 +36,16 @@ export function Carousel({
     if (!trackRef.current) return;
     const { scrollLeft, scrollWidth, clientWidth } = trackRef.current;
     const itemWidth = clientWidth / itemsCount;
-
+    if (isFirstRender.current) return;
     setScrollState((prev) => {
       const next = {
         left: scrollLeft > 0,
         right: Math.ceil(scrollLeft + clientWidth) < scrollWidth - 1,
         index: Math.round(scrollLeft / itemWidth),
       };
+
+      if (isProcessing) next.index = prev.index;
+
       // Only update if something changed
       return prev.left === next.left &&
         prev.right === next.right &&
@@ -47,7 +53,7 @@ export function Carousel({
         ? prev
         : next;
     });
-  }, [itemsCount]);
+  }, [itemsCount, isProcessing]);
 
   // --- Debounced Scroll Listener ---
   useEffect(() => {
@@ -57,15 +63,32 @@ export function Carousel({
     };
 
     const track = trackRef.current;
+
     if (track) {
-      checkScroll(); // Initial Check
+      if (activeSlide === null || activeSlide === 0) checkScroll(); // Initial Check
       track.addEventListener("scroll", handleScroll);
     }
+
     return () => {
       track?.removeEventListener("scroll", handleScroll);
       clearTimeout(track?.scrollTimer);
     };
   }, [checkScroll]);
+
+  useEffect(() => {
+    // If activeSlide is provided, valid, and different from current, SCROLL TO IT.
+    if (activeSlide !== null) {
+      scroll_To(activeSlide);
+    }
+  }, [activeSlide]);
+
+  // --- NEW: Sync Internal Scroll -> Parent State (setActiveSlide) ---
+  useEffect(() => {
+    // If internal index changes, notify parent
+    if (!isProcessing && setActiveSlide && scrollState.index !== activeSlide) {
+      setActiveSlide(scrollState.index);
+    }
+  }, [scrollState.index, isProcessing]);
 
   // --- Scroll Action ---
   const scroll_To = async (arg, e) => {
@@ -79,7 +102,8 @@ export function Carousel({
 
       const { clientWidth, scrollWidth, scrollLeft } = trackRef.current;
       const itemWidth = clientWidth / itemsCount;
-      // Check if arg is index(number) or direction(string)
+
+      // Check if arg is index(number) or direction(string) i.e passed from pager component or scroll button
       const isIndex = typeof arg === "number";
 
       // Calculate Target
@@ -114,6 +138,8 @@ export function Carousel({
       isFirstRender.current = false;
       return;
     }
+
+    // Wait to for target to be reached
     if (
       !isProcessing ||
       (targetSlideRef.current !== null &&
@@ -123,8 +149,9 @@ export function Carousel({
 
     const timer = setTimeout(async () => {
       try {
-        if (afterSlideCb)
+        if (afterSlideCb) {
           await afterSlideCb(scrollState.index, items[scrollState.index]);
+        }
       } finally {
         setIsProcessing(false);
         targetSlideRef.current = null;

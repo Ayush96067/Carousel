@@ -75,7 +75,7 @@ function App() {
   return (
     <div className="container">
       <BrowserRouter>
-        <Carousel
+        {/* <Carousel
           items={HeroBanner}
           itemsCount={1}
           slideMove={1}
@@ -101,7 +101,7 @@ function App() {
           // afterSlideCb={afterSlideCB}
         >
           <Card2 />
-        </Carousel>
+        </Carousel> */}
         <Carousel
           items={image_track}
           // itemsCount={1}
@@ -109,20 +109,20 @@ function App() {
           maxWidth={"90vw"}
           gapBetweenItems={"10px"}
           scrollButtonRequired={true}
+          activeSlide={5}
         >
           <ImageTracking />
         </Carousel>
-        <Carousel
+        {/* <Carousel
           items={image_track}
-          itemsCount={10}
+          itemsCount={25}
           slideMove={5}
           maxWidth={"90vw"}
-          // gapBetweenItems={"0px"}
           scrollButtonRequired={true}
           // isPagerRequired={false}
         >
           <ImageTrackingPager />
-        </Carousel>
+        </Carousel> */}
       </BrowserRouter>
     </div>
   );

@@ -46,7 +46,7 @@ export function Card2({ item }) {
             className={styles.card_link_wrapper}
           >
             <div className={styles.image_container}>
-              <Carousel items={imagePath}>
+              <Carousel items={imagePath} scrollButtonRequired={false}>
                 <ImageCarousel />
               </Carousel>
               <div
