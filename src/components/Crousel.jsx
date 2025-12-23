@@ -1,262 +1,228 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import styles from "../Styles/carousel.module.css";
 
-export function Crousel({
+export function Carousel({
   children,
   items = [],
   itemsCount = 1,
-  slideMove = 2,
+  slideMove = 1,
   maxWidth = "100vw",
   scrollButtonRequired = false,
   gapBetweenItems = "16px",
-  PagerComponent = DefaultPagerComponent,
   afterSlideCb,
   beforeSlideCb,
+  isPagerRequired = true,
 }) {
   const trackRef = useRef(null);
   const isFirstRender = useRef(true);
   const targetSlideRef = useRef(null);
 
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(false);
-  const [currentSlide, setCurrentSlide] = useState(0); // Start at 0 usually
+  // Grouped state for cleaner updates
+  const [scrollState, setScrollState] = useState({
+    left: false,
+    right: false,
+    index: 0,
+  });
+
   const [isProcessing, setIsProcessing] = useState(false);
 
-  if (items.length === 0) return <p>No products</p>;
+  if (!items.length) return <p>No products</p>;
 
-  // --- 1. CORE CALCULATION LOGIC (No State Updates yet) ---
-  const calculateScrollState = () => {
-    if (!trackRef.current) return null;
+  // --- Core Calculation Logic ---
+  const checkScroll = useCallback(() => {
+    if (!trackRef.current) return;
     const { scrollLeft, scrollWidth, clientWidth } = trackRef.current;
+    const itemWidth = clientWidth / itemsCount;
 
-    const totalItemWidth = clientWidth / itemsCount;
-    const newIndex = Math.floor(scrollLeft / totalItemWidth);
-
-    return {
-      left: scrollLeft > 0,
-      right: Math.ceil(scrollLeft + clientWidth) < scrollWidth - 1,
-      index: newIndex,
-    };
-  };
-
-  // --- DEBOUNCED CHECKER (Prevents flood of calls) --- ensures only update when scrolling STOPS for 100ms
-  const handleScroll = useCallback(() => {
-    if (trackRef.current.scrollTimer) {
-      clearTimeout(trackRef.current.scrollTimer);
-    }
-
-    trackRef.current.scrollTimer = setTimeout(() => {
-      const result = calculateScrollState();
-      if (result) {
-        setCanScrollLeft(result.left);
-        setCanScrollRight(result.right);
-
-        setCurrentSlide((prev) =>
-          prev !== result.index ? result.index : prev
-        );
-      }
-    }, 100);
+    setScrollState((prev) => {
+      const next = {
+        left: scrollLeft > 0,
+        right: Math.ceil(scrollLeft + clientWidth) < scrollWidth - 1,
+        index: Math.round(scrollLeft / itemWidth),
+      };
+      // Only update if something changed
+      return prev.left === next.left &&
+        prev.right === next.right &&
+        prev.index === next.index
+        ? prev
+        : next;
+    });
   }, [itemsCount]);
 
-  // --- SCROLL TO FUNCTION ---
-  const scroll_To = async (indexOrDirection, e) => {
-    if (e) e.preventDefault();
-    if (isProcessing) return;
+  // --- Debounced Scroll Listener ---
+  useEffect(() => {
+    const handleScroll = () => {
+      clearTimeout(trackRef.current.scrollTimer);
+      trackRef.current.scrollTimer = setTimeout(checkScroll, 100);
+    };
 
     const track = trackRef.current;
-    if (!track) return;
+    if (track) {
+      checkScroll(); // Initial Check
+      track.addEventListener("scroll", handleScroll);
+    }
+    return () => {
+      track?.removeEventListener("scroll", handleScroll);
+      clearTimeout(track?.scrollTimer);
+    };
+  }, [checkScroll]);
 
+  // --- Scroll Action ---
+  const scroll_To = async (arg, e) => {
+    e?.preventDefault();
+    if (isProcessing || !trackRef.current) return;
     setIsProcessing(true);
 
     try {
-      if (beforeSlideCb) {
-        await beforeSlideCb(currentSlide, items[currentSlide]);
-      }
+      if (beforeSlideCb)
+        await beforeSlideCb(scrollState.index, items[scrollState.index]);
 
-      const itemWidth = track.clientWidth / itemsCount;
-      const isIndex = typeof indexOrDirection === "number";
-      let targetIndex;
+      const { clientWidth, scrollWidth, scrollLeft } = trackRef.current;
+      const itemWidth = clientWidth / itemsCount;
+      // Check if arg is index(number) or direction(string)
+      const isIndex = typeof arg === "number";
 
-      if (isIndex) {
-        targetIndex = indexOrDirection;
-      } else {
-        const direction = indexOrDirection === "left" ? -1 : 1;
-        const currentScrollIndex = Math.round(track.scrollLeft / itemWidth);
-        targetIndex = currentScrollIndex + slideMove * direction;
+      // Calculate Target
+      let target = isIndex
+        ? arg
+        : Math.round(scrollLeft / itemWidth) +
+          slideMove * (arg === "left" ? -1 : 1);
 
-        const maxIndex = Math.ceil(track.scrollWidth / itemWidth) - 1;
-        if (targetIndex < 0) targetIndex = 0;
-        if (targetIndex > maxIndex) targetIndex = maxIndex;
-      }
+      const maxIndex = Math.round((scrollWidth - clientWidth) / itemWidth);
+      target = Math.max(0, Math.min(target, maxIndex)); // Clamp target
 
-      targetSlideRef.current = targetIndex;
+      targetSlideRef.current = target;
 
-      const method = isIndex ? "scrollTo" : "scrollBy";
-      const amount = isIndex
-        ? targetIndex * itemWidth
-        : itemWidth * slideMove * (indexOrDirection === "left" ? -1 : 1);
+      trackRef.current[isIndex ? "scrollTo" : "scrollBy"]({
+        left: isIndex
+          ? target * itemWidth
+          : itemWidth * slideMove * (arg === "left" ? -1 : 1),
+        behavior: "smooth",
+      });
 
-      track[method]({ left: amount, behavior: "smooth" });
-
-      if (currentSlide === targetIndex) {
+      // Manual unlock fallback
+      if (scrollState.index === target)
         setTimeout(() => setIsProcessing(false), 500);
-      }
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
       setIsProcessing(false);
     }
   };
 
-  // ---- AFTER SLIDE LOGIC ----
+  // --- After Slide Callback ---
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
       return;
     }
-
-    if (!isProcessing) return;
-
     if (
-      targetSlideRef.current !== null &&
-      currentSlide !== targetSlideRef.current
-    ) {
+      !isProcessing ||
+      (targetSlideRef.current !== null &&
+        scrollState.index !== targetSlideRef.current)
+    )
       return;
-    }
 
-    // const timer = setTimeout(async () => {
-    try {
-      if (afterSlideCb) {
-        console.log("✅ Reached Target. Running Callback...");
-        afterSlideCb(currentSlide, items[currentSlide]);
+    const timer = setTimeout(async () => {
+      try {
+        if (afterSlideCb)
+          await afterSlideCb(scrollState.index, items[scrollState.index]);
+      } finally {
+        setIsProcessing(false);
+        targetSlideRef.current = null;
       }
-    } finally {
-      setIsProcessing(false);
-      targetSlideRef.current = null;
-    }
-    // }, 100);
-
+    }, 100);
     return () => clearTimeout(timer);
-  }, [currentSlide, isProcessing]);
+  }, [scrollState.index, isProcessing, afterSlideCb, items]);
 
-  useEffect(() => {
-    const initialData = calculateScrollState();
-
-    if (initialData) {
-      setCanScrollLeft(initialData.left);
-      setCanScrollRight(initialData.right);
-      setCurrentSlide(initialData.index);
-    }
-
-    const track = trackRef.current;
-    if (track) {
-      track.addEventListener("scroll", handleScroll);
-    }
-
-    return () => {
-      if (track) {
-        track.removeEventListener("scroll", handleScroll);
-        if (track.scrollTimer) clearTimeout(track.scrollTimer);
-      }
-    };
-  }, [handleScroll]);
+  const commonStyles = {
+    "--item-count": itemsCount,
+    "--gap-between-elements": gapBetweenItems,
+    listStyle: "none",
+  };
 
   return (
     <div
-      id={"carousel"}
+      id="carousel"
       className={styles.carousel_container}
-      style={{ maxWidth: maxWidth }}
+      style={{ maxWidth }}
     >
-      {items.length > 1 ? (
+      {items.length <= 1 ? (
+        <div className={styles.carousel_item} style={commonStyles}>
+          {children && React.cloneElement(children, { item: items[0] })}
+        </div>
+      ) : (
         <>
-          {scrollButtonRequired && canScrollLeft && (
+          {scrollButtonRequired && scrollState.left && (
             <ScrollButton
-              scroll={scroll_To}
-              direction={"left"}
+              dir="left"
+              onClick={(e) => scroll_To("left", e)}
               disabled={isProcessing}
             />
           )}
+
           <ul
             className={styles.carousel_track}
             ref={trackRef}
-            style={{
-              "--item-count": itemsCount,
-              "--gap-between-elements": gapBetweenItems,
-              listStyle: "none",
-            }}
+            style={commonStyles}
           >
-            {items?.map((item) => (
+            {items.map((item) => (
               <li
-                className={styles.carousel_item}
                 key={item.id}
+                className={styles.carousel_item}
                 style={{ scrollSnapAlign: itemsCount > 1 ? "start" : "center" }}
               >
                 {children && React.cloneElement(children, { item })}
               </li>
             ))}
           </ul>
-          {scrollButtonRequired && canScrollRight && (
+
+          {scrollButtonRequired && scrollState.right && (
             <ScrollButton
-              scroll={scroll_To}
-              direction={"right"}
+              dir="right"
+              onClick={(e) => scroll_To("right", e)}
               disabled={isProcessing}
             />
           )}
-          <div id="pager_id" className={styles.crousel_pager}>
-            {items.map((item, index) => (
-              <PagerComponent
-                key={index}
-                scroll_To={scroll_To}
-                index={index}
-                currentSlide={currentSlide}
-                item={item}
-              />
-            ))}
-          </div>
+
+          {isPagerRequired && (
+            <div id="pager_id" className={styles.carousel_pager}>
+              {Array.from({ length: items.length - itemsCount + 1 }).map(
+                (_, i) => (
+                  <DefaultPagerComponent
+                    key={i}
+                    scroll_To={scroll_To}
+                    index={i}
+                    currentSlide={scrollState.index}
+                  />
+                )
+              )}
+            </div>
+          )}
         </>
-      ) : (
-        <div
-          className={styles.carousel_item}
-          style={{
-            "--item-count": itemsCount,
-            listStyle: "none",
-          }}
-        >
-          {children && React.cloneElement(children, { item: items[0] })}
-        </div>
       )}
     </div>
   );
 }
 
-function ScrollButton({ scroll, direction, disabled }) {
-  return (
-    <button
-      disabled={disabled}
-      className={`${styles.carousel_btn} ${
-        direction === "right"
-          ? styles.carousel_btn_right
-          : styles.carousel_btn_left
-      }`}
-      style={{
-        opacity: disabled ? 0.5 : 1,
-        cursor: disabled ? "wait" : "pointer",
-      }}
-      onClick={(e) => scroll(direction, e)}
-      aria-label="Scroll Button"
-    >
-      {direction === "right" ? <>&#8250;</> : <>&#8249;</>}
-    </button>
-  );
-}
+// --- Simplified Helper Components ---
+const ScrollButton = ({ dir, onClick, disabled }) => (
+  <button
+    disabled={disabled}
+    onClick={onClick}
+    className={`${styles.carousel_btn} ${dir === "right" ? styles.carousel_btn_right : styles.carousel_btn_left}`}
+    style={{
+      opacity: disabled ? 0.5 : 1,
+      cursor: disabled ? "wait" : "pointer",
+    }}
+    aria-label={`Scroll ${dir}`}
+  >
+    {dir === "right" ? <>&#8250;</> : <>&#8249;</>}
+  </button>
+);
 
-const DefaultPagerComponent = ({ scroll_To, index, currentSlide }) => {
-  return (
-    <button
-      onClick={(e) => scroll_To(index, e)}
-      className={`${styles.pager_dot} ${
-        currentSlide === index ? styles.active : ""
-      }`}
-      aria-label={`Go to slide ${index + 1}`}
-    />
-  );
-};
+const DefaultPagerComponent = ({ scroll_To, index, currentSlide }) => (
+  <button
+    onClick={(e) => scroll_To(index, e)}
+    className={`${styles.pager_dot} ${currentSlide === index ? styles.active : ""}`}
+    aria-label={`Go to slide ${index + 1}`}
+  />
+);
