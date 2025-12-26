@@ -7,9 +7,12 @@ export function ImageTracking({ item }) {
   );
 }
 
-export function ImageTrackingPager({ item }) {
+export function ImageTrackingPager({ item, setActiveSlide, index }) {
   return (
-    <div className={styles.imageContainer2}>
+    <div
+      className={styles.imageContainer2}
+      onClick={() => setActiveSlide(index)}
+    >
       <img src={`${item}`} alt="Product image" />
     </div>
   );
