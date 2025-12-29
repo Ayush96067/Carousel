@@ -5,7 +5,7 @@ function Card({ item, showDetails = true }) {
   const formattedPrice = item.price ? `$${item.price}` : "N/A";
 
   return (
-    <div className="flex flex-col items-center group text-start w-full py-4 px-2 hover:shadow-lg rounded-md transition-shadow duration-300">
+    <div className="flex flex-col cursor-pointer items-center group text-start w-full py-4 px-2 hover:shadow-lg rounded-md transition-shadow duration-300">
       {/* 1. Image Area (Common for both Carousel and Grid) */}
       <div className="overflow-hidden w-[80%] aspect-square flex items-center justify-center mb-4">
         <img
@@ -29,7 +29,7 @@ function Card({ item, showDetails = true }) {
 
         {/* Name */}
         <p
-          className={`text-gray-400 text-sm ${showDetails && "place-self-start"}  text-start font-medium line-clamp-2 min-h-[2.5em] leading-tight`}
+          className={`text-black text-sm ${showDetails && "place-self-start"}  text-start font-normal line-clamp-2 min-h-[2.5em] leading-tight`}
         >
           {item.name}
         </p>

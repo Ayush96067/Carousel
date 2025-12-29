@@ -153,33 +153,73 @@ export const SHAPES_DATA = [
   },
   {
     id: 6,
-    name: "Cushion Rect",
-    quantity: 299,
-    icon: TbSquareRoundedLetterCFilled,
-  },
-  {
-    id: 7,
     name: "Square",
     quantity: 236,
     icon: TbSquareRoundedLetterSFilled,
   },
   {
-    id: 8,
-    name: "Emerald Cut",
-    quantity: 284,
-    icon: TbSquareRoundedLetterEFilled,
-  },
-  {
-    id: 9,
+    id: 7,
     name: "Pear",
     quantity: 283,
     icon: TbSquareRoundedLetterPFilled,
   },
   {
-    id: 10,
+    id: 8,
     name: "Cushion",
     quantity: 299,
     icon: TbSquareRoundedLetterCFilled,
+  },
+  {
+    id: 9,
+    name: "Heart",
+    quantity: 236,
+    icon: TbSquareRoundedLetterHFilled,
+  },
+  {
+    id: 10,
+    name: "Square",
+    quantity: 236,
+    icon: TbSquareRoundedLetterSFilled,
+  },
+  {
+    id: 11,
+    name: "Pear",
+    quantity: 283,
+    icon: TbSquareRoundedLetterPFilled,
+  },
+  {
+    id: 12,
+    name: "Cushion",
+    quantity: 299,
+    icon: TbSquareRoundedLetterCFilled,
+  },
+];
+
+export const METAL_DATA = [
+  {
+    id: 1,
+    icon: "WG",
+    name: "White Gold",
+  },
+  {
+    id: 2,
+    icon: "YG",
+    name: "Yellow Gold",
+  },
+  {
+    id: 3,
+    icon: "RG",
+    name: "Rose Gold",
+  },
+  {
+    id: 4,
+    icon: "PT",
+    name: "Platinum",
+  },
+  {
+    id: 5,
+    icon: "TT",
+    name: "Two Tone",
   },
 ];
 
@@ -283,6 +323,7 @@ export const PRODUCT_DATA = [
 ];
 
 export const METAL_OPTIONS = ["14K", "18K", "PT", "SL"];
+
 export const COLOR_OPTIONS = [
   { label: "Rose", color: "bg-rose-200" },
   { label: "White", color: "bg-gray-200" },

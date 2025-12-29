@@ -1,12 +1,12 @@
-import Bar from "../FigmaUI/Bar";
+import { useState } from "react";
 import { CiHeart, CiSearch, CiUser } from "react-icons/ci";
 import { MdOutlineShoppingBag } from "react-icons/md";
 
-const types = [
+const NAV_LINKS = [
   "Rings",
   "Necklaces",
   "Earrings",
-  "Engagment Rings",
+  "Engagement Rings",
   "Wedding Rings",
   "Bracelets",
   "Collections",
@@ -15,42 +15,99 @@ const types = [
 ];
 
 function Navbar() {
+  const [show, setShow] = useState(false);
   return (
-    <div className="mb-5 z-10">
-      <div>
-        <Bar align="justify-between">
-          <div className="text-sm font-medium ">
-            <span className="border-r pr-3"> 24/7 Customer Support</span>
+    <>
+      <header className="fixed top-0 left-0 w-full z-50 bg-white shadow-sm transition-all duration-300">
+        {/* TOP ROW */}
+        <div className="flex justify-between items-center px-6 py-2 ">
+          {/* Contact Info */}
+          <div className="hidden md:flex  text-xs font-medium text-gray-600">
+            <span className="border-r border-gray-300 pr-3">
+              24/7 Customer Support
+            </span>
             <span className="pl-3">+1-844-527-4367</span>
           </div>
-          <div className="tracking-[7.8px] text-[1.7rem] cursor-pointer">
-            ANGARA
+          <button
+            className="md:hidden text-xs font-medium text-gray-600"
+            onClick={() => setShow((show) => !show)}
+          >
+            M
+          </button>
+          {/* Logo */}
+          <div className="text-2xl tracking-[0.3em] font-serif font-medium cursor-pointer uppercase">
+            Angara
           </div>
-          <div className="flex items-center justify-center gap-5">
-            <span className="relative">
-              <CiSearch className="absolute top-[50%] translate-y-[-50%] left-2 text-xl" />
+
+          {/* Actions & Search */}
+          <div className="flex items-center gap-4">
+            {/* Search Input */}
+            <div className="relative hidden sm:block">
+              <CiSearch className="absolute top-1/2 -translate-y-1/2 left-3 text-lg text-gray-500" />
               <input
-                className="border border-[#8080803b] px-8 py-1 font-medium capitalize placeholder:text-black placeholder:text-sm placeholder:uppercase focus:outline-none focus:border-[#8080809d]"
+                className="w-full border border-gray-200 pl-10 pr-4 py-1.5 text-sm rounded-sm placeholder:text-xs placeholder:uppercase focus:outline-none focus:border-gray-400 transition-colors"
                 placeholder="Search"
+                aria-label="Search"
               />
-            </span>
-            <span className="flex text-2xl gap-4 *:cursor-pointer *:hover:-translate-y-1 *:transition-transform *:duration-200">
-              <CiUser />
-              <CiHeart />
-              <MdOutlineShoppingBag />
-            </span>
+            </div>
+
+            {/* Icons */}
+            <div className="flex items-center gap-4 text-2xl text-gray-700">
+              <IconButton icon={<CiUser />} label="Account" />
+              <IconButton icon={<CiHeart />} label="Wishlist" />
+              <IconButton icon={<MdOutlineShoppingBag />} label="Cart" />
+            </div>
           </div>
-        </Bar>
-        <Bar align="justify-around" className={"mt-10 px-9"}>
-          {types.map((type) => (
-            <button className="uppercase font-medium hover:text-gray-600 hover:underline underline-offset-8 cursor-pointer">
-              {type}
-            </button>
-          ))}
-        </Bar>
-      </div>
-    </div>
+        </div>
+
+        {/* BOTTOM ROW (Links) */}
+        {/* <nav className="hidden md:flex justify-center py-4 px-4 overflow-x-auto">
+          <ul className="flex gap-20 whitespace-nowrap ">
+            {NAV_LINKS.map((type) => (
+              <li key={type}>
+                <a
+                  href={`#${type}`}
+                  className="text-xs uppercase font-medium tracking-wider text-gray-800 hover:text-black hover:underline underline-offset-8 transition-all"
+                >
+                  {type}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav> */}
+
+        <nav
+          className={`md:hidden bg-[#cecece77] transition-all duration-200 ${show ? "w-[80%] px-4 " : "w-0"} py-4 min-h-screen md:px-4  `}
+        >
+          <ul
+            className={`md:flex flex-col  ${show ? "flex" : "hidden"}  md:justify-center md:w-full md:flex-row gap-10 md:gap-20 whitespace-nowrap `}
+          >
+            {NAV_LINKS.map((type) => (
+              <li key={type}>
+                <a
+                  href={`#${type}`}
+                  className="text-xs uppercase font-medium tracking-wider text-gray-800 hover:text-black hover:underline underline-offset-8 transition-all"
+                >
+                  {type}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </header>
+
+      <div className="h-25 w-full" />
+    </>
   );
 }
+
+const IconButton = ({ icon, label }) => (
+  <button
+    aria-label={label}
+    className={`${label === "Account" && "md:block hidden"}  hover:-translate-y-0.5 transition-transform duration-200 p-1`}
+  >
+    {icon}
+  </button>
+);
 
 export default Navbar;

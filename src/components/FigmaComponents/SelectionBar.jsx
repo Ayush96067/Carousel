@@ -5,10 +5,18 @@ import { GiDiamondRing } from "react-icons/gi";
 import { Carousel } from "../Crousel"; // Ensure this path is correct
 import { selectionCard, SHAPES_DATA, STEPS_DATA } from "../../lib/figmaData";
 import Card from "./FigmaUI/Card";
+import { StepCard } from "./FigmaUI/StepCard";
+import { ShapeCard } from "./FigmaUI/ShapeCard";
 
 function SelectionBar() {
+  const isMobile = window.innerWidth <= 768;
+  const isDesktop = window.innerWidth > 1300;
+  const isTablet = !isMobile && !isDesktop;
+
+  const imageItemsCount = isDesktop ? 10 : isTablet ? 5 : 4;
+  const shapeItemsCount = isDesktop ? 8 : isTablet ? 5 : 3;
   return (
-    <div className="pt-10 flex flex-col gap-10">
+    <div className="pt-10 flex flex-col md:gap-10 gap-1">
       {/* 1. Steps Selection Bar */}
       <div className="grid grid-cols-3 border-b border-black">
         {STEPS_DATA.map((step, index) => (
@@ -17,10 +25,10 @@ function SelectionBar() {
       </div>
 
       {/* 2. Ring Styles Carousel */}
-      <div className="w-[90%] mx-auto">
+      <div className="md:w-[90%] mx-auto ">
         <Carousel
           items={selectionCard}
-          itemsCount={10}
+          itemsCount={imageItemsCount}
           isPagerRequired={false}
           scrollButtonRequired={true}
           slideMove={5}
@@ -33,7 +41,7 @@ function SelectionBar() {
       <div className="w-[90%] mx-auto">
         <Carousel
           items={SHAPES_DATA}
-          itemsCount={6}
+          itemsCount={shapeItemsCount}
           isPagerRequired={false}
           scrollButtonRequired={true}
           slideMove={5}
@@ -45,49 +53,5 @@ function SelectionBar() {
     </div>
   );
 }
-
-// --- Reusable Components ---
-
-const StepCard = ({ step, isMiddle }) => (
-  <div
-    className={`
-      flex justify-between items-center px-5 py-8 
-      text-[1.3rem] uppercase font-medium text-[#636363a6] border-t border-black
-      cursor-pointer group hover:bg-[#FBF4E6] hover:text-black transition-colors
-      ${!isMiddle ? "border-x" : ""} 
-    `}
-  >
-    <div className="flex gap-4 items-center">
-      <span className="w-10 h-10 rounded-full flex justify-center items-center bg-[#8080801a] group-hover:bg-black group-hover:text-white transition-colors">
-        {step.id}
-      </span>
-      {step.text}
-    </div>
-    <step.icon className="text-4xl" />
-  </div>
-);
-
-const ImageCard = ({ item }) => (
-  <div className="flex flex-col items-center group cursor-pointer">
-    <div className="overflow-hidden">
-      <img
-        src={item.imageSrc}
-        alt={item.Name}
-        className="group-hover:scale-105 transition-transform duration-500"
-      />
-    </div>
-    <span className="mt-2 text-sm font-medium">{item.Name}</span>
-  </div>
-);
-
-const ShapeCard = ({ item }) => (
-  <div className="flex gap-2 items-center justify-center py-2 border border-gray-200 text-gray-500 hover:text-black hover:border-black cursor-pointer transition-colors duration-200">
-    <span className="text-2xl">
-      <item.icon />
-    </span>
-    <p className="text-sm font-medium">{item.name}</p>
-    <p className="text-xs">({item.quantity})</p>
-  </div>
-);
 
 export default SelectionBar;
