@@ -14,7 +14,33 @@ body {
   min-height: 100vh;
 }
 
+.logo{
+    font-size: 1.25rem;
+    letter-spacing: 0.2em;
+    font-family: serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    cursor: pointer;
+}
 
+.flex_center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex_between{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+@media (min-width: 768px) {
+ .logo{
+    font-size: 1.5rem;
+  }
+}
 
 
 /* image tracker */

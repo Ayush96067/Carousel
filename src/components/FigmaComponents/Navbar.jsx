@@ -3,6 +3,7 @@ import { CiHeart, CiSearch, CiUser, CiMenuBurger } from "react-icons/ci";
 import { MdOutlineShoppingBag, MdClose } from "react-icons/md";
 import { Link } from "react-router-dom";
 import SlideBar from "./FigmaUI/SlideBar";
+import styles from "../../Styles/FigmaStyles/Navbar.module.css";
 
 const NAV_LINKS = [
   "Rings",
@@ -24,20 +25,16 @@ function Navbar() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 w-full z-50 bg-white shadow-sm transition-all duration-300">
+      <header className={styles.navContainer}>
         {/* TOP ROW */}
-        <div className="flex justify-between items-center px-4 md:px-6 py-3 border-b border-gray-100">
-          <div className="hidden md:flex  text-xs font-medium text-gray-600">
-            <span className="border-r border-gray-300 pr-3">
-              24/7 Customer Support
-            </span>
-            <span className="pl-3 hover:text-[#b07e1c] cursor-pointer">
-              +1-844-527-4367
-            </span>
+        <div className={styles.navUpperBar}>
+          <div className={styles.navContactInfo}>
+            <span>24/7 Customer Support</span>
+            <span>+1-844-527-4367</span>
           </div>
           {/* 1. Mobile Hamburger Button (Visible only on Mobile) */}
           <button
-            className="md:hidden text-2xl p-1"
+            className={"md:hidden text-2xl p-1"}
             onClick={() => setIsMobileMenuOpen(true)}
             aria-label="Open Menu"
           >
@@ -45,20 +42,17 @@ function Navbar() {
           </button>
 
           {/* 2. Logo */}
-          <Link
-            href={`/`}
-            className="text-xl md:text-2xl tracking-[0.2em] font-serif font-medium cursor-pointer uppercase"
-          >
+          <Link href={`/`} className="logo">
             Angara
           </Link>
 
           {/* 3. Actions (User, Cart, etc) */}
-          <div className="flex items-center gap-3 md:gap-4 text-2xl text-gray-700">
+          <div className={styles.navSearchIcons}>
             {/* Search hidden on small mobile, visible on larger */}
-            <div className="hidden sm:block relative mr-2">
-              <CiSearch className="absolute top-1/2 -translate-y-1/2 left-2 text-lg text-gray-500" />
+            <div className={`hidden sm:block mr-2 ${styles.search_bar}`}>
+              <CiSearch className="-translate-y-1/2" />
               <input
-                className="border border-gray-200 pl-8 pr-2 py-1 text-sm rounded-sm focus:outline-none w-30 lg:w-45"
+                className="focus:outline-none w-30 lg:w-45 placeholder:text-black"
                 placeholder="Search"
               />
             </div>
@@ -96,7 +90,7 @@ function Navbar() {
                 <a
                   href={`#${type}`}
                   onClick={handleClick}
-                  className="text-sm uppercase font-medium tracking-wider text-gray-800 hover:text-black block"
+                  className={`${styles.nav_link}`}
                 >
                   {type}
                 </a>
@@ -115,10 +109,10 @@ function Navbar() {
 
 function SearchBar() {
   return (
-    <div className="md:hidden relative w-[95%] mx-auto">
-      <CiSearch className="absolute top-1/2 -translate-y-1/2 left-2 text-lg text-black" />
+    <div className={`md:hidden w-[95%] mx-auto ${styles.search_bar}`}>
+      <CiSearch className="-translate-y-1/2" />
       <input
-        className="border border-gray-200 pl-8 pr-2 py-2 text-sm rounded-sm focus:outline-none w-full lg:w-45 placeholder:text-black"
+        className="focus:outline-none w-full lg:w-45 placeholder:text-black"
         placeholder="Search"
       />
     </div>
@@ -139,7 +133,7 @@ const NavLink = ({ href, children }) => (
   <li>
     <a
       href={href}
-      className="text-xs uppercase font-medium tracking-wider text-gray-800 hover:text-black hover:underline underline-offset-8 transition-all"
+      className={`${styles.nav_link} hover:text-black hover:underline `}
     >
       {children}
     </a>

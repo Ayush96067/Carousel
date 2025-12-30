@@ -1,23 +1,26 @@
 import { COLOR_OPTIONS, METAL_OPTIONS } from "../../../lib/figmaData";
+import styles from "../../../Styles/FigmaStyles/SelectionBar.module.css";
 
 function Card({ item, showDetails = true }) {
   // Safe default if price is missing
   const formattedPrice = item.price ? `$${item.price}` : "N/A";
 
   return (
-    <div className="flex flex-col cursor-pointer items-center group text-start w-full py-4 px-2 hover:shadow-lg rounded-md transition-shadow duration-300">
+    <div
+      className={`${styles.productCard_container} group ${showDetails && "hover:shadow-lg"} transition-shadow duration-300 `}
+    >
       {/* 1. Image Area (Common for both Carousel and Grid) */}
-      <div className="overflow-hidden w-[80%] aspect-square flex items-center justify-center mb-4">
+      <div className={`${styles.imageArea}`}>
         <img
           src={item.imgSrc}
           alt={item.name}
-          className="group-hover:scale-110 object-contain w-full h-full transition-transform duration-500"
+          className="group-hover:scale-110 transition-transform duration-500 w-[80%]"
         />
       </div>
 
       {/* 2. Details Area (Conditional) */}
       {/* If showDetails is false, we just show the name (Like in Carousel) */}
-      <div className="flex flex-col gap-2 items-center text-center w-full">
+      <div className={styles.detailsArea}>
         {showDetails && (
           <div className="flex flex-col gap-2 mb-1">
             {/* Metal Swatches */}
@@ -28,18 +31,12 @@ function Card({ item, showDetails = true }) {
         )}
 
         {/* Name */}
-        <p
-          className={`text-black text-sm ${showDetails && "place-self-start"}  text-start font-normal line-clamp-2 min-h-[2.5em] leading-tight`}
-        >
+        <span className={`${styles.name} ${showDetails && "place-self-start"}`}>
           {item.name}
-        </p>
+        </span>
 
         {/* Price (Only if details needed) */}
-        {showDetails && (
-          <p className="text-gray-900 place-self-start font-medium text-sm mt-1">
-            {formattedPrice}
-          </p>
-        )}
+        {showDetails && <span className={styles.price}>{formattedPrice}</span>}
       </div>
     </div>
   );
@@ -58,7 +55,7 @@ const SwatchRow = ({ options, type }) => (
         <button
           key={index}
           className={`
-            ${isColor ? "w-4 h-4  rounded-full border border-gray-300" : "px-1.5 py-0.5 rounded text-[10px] border border-gray-400"}
+            ${isColor ? "w-4 h-4 rounded-full border border-gray-300" : "px-1.5 py-0.5 rounded text-[10px] border border-gray-400"}
             ${bgClass}
             hover:border-black hover:scale-110 transition-all duration-200
             flex items-center justify-center cursor-pointer

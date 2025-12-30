@@ -1,10 +1,10 @@
 import { MdClose } from "react-icons/md";
 import { Link } from "react-router-dom";
-
+import styles from "../../../Styles/FigmaStyles/FigmaUIStyles/Slidebar.module.css";
 // 1. Configuration for directions
 const slideConfig = {
   left: {
-    container: "top-0 left-0 h-full w-[80%] max-w-[300px]",
+    container: "top-0 left-0 h-full w-[80%] max-w-[300px] md:max-w-[500px]",
     transformOpen: "translate-x-0",
     transformClose: "-translate-x-full",
   },
@@ -40,7 +40,7 @@ function SlideBar({
     <>
       {/* 1. Backdrop Overlay */}
       <div
-        className={` fixed inset-0 bg-black/50 z-60 transition-opacity duration-300 ${
+        className={`${styles.slidebar_backdropOverlay_container} transition-opacity duration-300 ${
           isOpen
             ? "opacity-100 visible"
             : "opacity-0 invisible pointer-events-none"
@@ -50,18 +50,16 @@ function SlideBar({
 
       {/* 2. The Sliding Drawer */}
       <div
-        className={`
-          fixed bg-white z-70 shadow-2xl transition-transform duration-300 ease-in-out
+        className={`${styles.slidebar_drawer_container}
+         transition-transform duration-300 ease-in-out
           ${config.container}
           ${isOpen ? config.transformOpen : config.transformClose}
           ${className} 
         `}
       >
         {/* Header */}
-        <div className="flex justify-between items-center p-4">
-          <Link className="text-xl font-serif tracking-[0.2em] uppercase">
-            {title}
-          </Link>
+        <div className="flex_between p-4">
+          <Link className="logo">{title}</Link>
           <button
             onClick={onClose}
             className="text-2xl p-1 hover:bg-gray-100 rounded-full"

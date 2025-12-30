@@ -1,0 +1,91 @@
+.filterContainer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 1.75rem;
+}
+
+/* ----------- More Filter Button --------------- */
+.filterButton{
+    background-color: black;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+    cursor: pointer;
+    color: white;
+    padding: 0.5rem 0.75rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.filterButton:hover{
+    background-color:#000000c4 ;
+}
+
+/* --------------- Sort Drop down ---------------*/
+.sort_dropDown{
+    display: none;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ----------------- Range Slider --------------------- */
+.range_input{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    appearance: none;
+    background-color: transparent;
+    pointer-events: none;
+    z-index: 20;
+}
+
+.range_background_track{
+    position: absolute;
+    inset:0;
+    margin: auto;
+    background-color: #e5e7eb;
+    height: 0.3rem;
+    z-index: 0;
+    border-radius: 0%;
+}
+
+.range_value{
+    width: 5rem;
+    border: 1px solid #e5e7eb;
+    padding: 0.5rem .25rem;
+    color: #6a7282 ;
+}
+
+.range_input::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          pointer-events: auto; /* Re-enable clicks ONLY on the handle */
+          width: 13px;
+          height: 13px;
+          border-radius: 50%;
+          background: rgb(0, 0, 0);
+          border: 2px solid black;
+          cursor: pointer;
+        }
+
+
+/* Width check */
+.widthContainer{
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+    color: black;
+}
+
+@media (min-width:768px) {
+    .filterButton{
+        position: static;
+    }
+    .sort_dropDown{
+        display: flex;
+    }
+}

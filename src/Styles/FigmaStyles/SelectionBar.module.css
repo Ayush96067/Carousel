@@ -1,0 +1,153 @@
+.selectionBar_container{
+    padding-top: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.card_container{
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-bottom: 1px solid #00000028;
+}
+
+
+/* ----------------- Step card ---------------- */
+.stepcard_container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    font-weight: 500;
+    border-top: 1px solid #00000028;
+    cursor: pointer;
+    position: relative;
+    transition-property: color;
+}
+
+.stepcard_icon{
+    top: -0.75rem;
+    left: 50%;
+    font-size: 1.5rem;
+    transform: translateX(-50%);
+    position: absolute;
+}
+
+/* -------------------- Product Card ------------------ */
+.productCard_container{
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    align-items: center;
+    text-align: start;
+    width: 100%;
+    padding: 1rem .5rem;
+    border-radius: 0.375rem;
+}
+
+
+.productCard_container .imageArea{
+    overflow: hidden;
+    width: 80%;
+    aspect-ratio: 1/1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.productCard_container .name{
+    color: black;
+    font-size: 0.875rem;
+    text-align: center;
+    font-weight: 400;
+    min-height: 2.5em;
+    line-height:1.25;
+}
+.productCard_container .price{
+    color: #101828;
+    place-self: start;
+    font-weight: 500;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+.productCard_container .imageArea img{
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+}
+
+.productCard_container .detailsArea{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+}
+
+/* --------------- Shape card --------------------- */
+.shape_card{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    gap: 0.5rem;
+    border: 1px solid #e5e7eb;
+    color: black;
+    cursor: pointer;
+}
+
+.shape_card:hover{
+    color: black;
+    border-color: black;
+}
+
+
+/* ------------------ Step card ----------------------  */
+.stepcard_context{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+}
+.stepcard_context span{
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+
+@media (min-width:768px) {
+    .selectionBar_container{
+        gap: 2.5rem;
+    }
+    .stepcard_container{
+        padding-block: 2rem;
+        font-size: 1.3rem;
+    }
+    .stepcard_icon{
+        font-size: 2.25rem;
+        position: static;
+        top: auto;
+        left: auto;
+    }
+    .stepcard_context{
+        flex-direction: row;
+    }
+    .stepcard_context span{
+        display: flex;
+    }
+    .shape_card{
+        gap:0.25rem;
+        color: gray;
+    }
+}
